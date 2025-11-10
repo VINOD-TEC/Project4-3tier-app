@@ -100,20 +100,27 @@ pipeline {
                         sh '''
                             git config user.email "ali.wazeer2000@gmail.com"
                             git config user.name "Uliwazeer"
+
                             BUILD_NUMBER=${BUILD_NUMBER}
-                            echo $BUILD_NUMBER
-                            imageTag=$(grep -oP '(?<=backend:)[^ ]+' deployment.yaml)
-                            echo $imageTag
+                            echo "Build number: $BUILD_NUMBER"
+
+                            # الحصول على الـ image tag الحالي بطريقة آمنة
+                            imageTag=$(grep 'backend:' deployment.yaml | awk -F: '{print $2}' | tr -d '[:space:]')
+                            echo "Current image tag: $imageTag"
+
+                            # تحديث الـ deployment.yaml
                             sed -i "s/${AWS_ECR_REPO_NAME}:${imageTag}/${AWS_ECR_REPO_NAME}:${BUILD_NUMBER}/" deployment.yaml
+
+                            # إضافة التغييرات والcommit
                             git add deployment.yaml
-                            git commit -m "Update deployment Image to version \${BUILD_NUMBER}"
-                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                            git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
+
+                            # push باستخدام الـ token
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git HEAD:main || echo "Push failed: check token permissions"
                         '''
                     }
                 }
             }
         }
     }
-
 }
-
