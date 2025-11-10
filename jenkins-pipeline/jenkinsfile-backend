@@ -116,7 +116,7 @@ pipeline {
                             git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
 
                             # push باستخدام الـ token
-                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git HEAD:main || echo "Push failed: check token permissions"
+                            git push https://${GITHUB_TOKEN}@github.com/Uliwazeer/Project4-3tier-app.git HEAD:main || echo "Push failed: check token permissions"
                         '''
                     }
                 }
@@ -124,3 +124,4 @@ pipeline {
         }
     }
 }
+
