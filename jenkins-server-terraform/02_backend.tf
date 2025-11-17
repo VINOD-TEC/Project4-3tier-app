@@ -8,7 +8,7 @@ terraform {
     region         = "us-west-2"
     
     # The key (path) within the S3 bucket for storing the state file.
-    key            = "three-tier-devdecops-project/jenkins-server-terraform/terraform.tfstate"
+    key            = "three-tier-ali-devsecops-state-west2/jenkins-server-terraform/terraform.tfstate"
     
     # The DynamoDB table used for state locking to prevent concurrent state changes.
     dynamodb_table = "lock-files"
@@ -31,6 +31,7 @@ terraform {
     }
   }
 }
+
 
 
 
